@@ -3,7 +3,7 @@ use bevy::prelude::*;
 use crate::mods::map::{direction::MapDirection, map_position::MapPosition};
 
 use super::{
-    instruction::{instruction::Instruction, set::InstructionSet},
+    instruction::{encoded::decode_bna, instruction::Instruction, set::InstructionSet},
     membrane::Membrane,
     r#type::CellType,
 };
@@ -11,12 +11,13 @@ use super::{
 pub mod instruction_execution;
 
 #[derive(Component)]
-pub struct Nucleus {
+pub struct Stem {
     instruction_set: InstructionSet,
 }
 
-impl Nucleus {
-    fn new(instructions: Vec<Instruction>) -> Self {
+impl Stem {
+    fn new(mut instructions: Vec<Instruction>) -> Self {
+        instructions.reverse();
         Self {
             instruction_set: InstructionSet::new(instructions),
         }
@@ -24,29 +25,23 @@ impl Nucleus {
 }
 
 #[derive(Bundle)]
-pub struct NucleusBundle {
-    nucleus: Nucleus,
+pub struct StemBundle {
+    nucleus: Stem,
     map_position: MapPosition,
     draw: SpriteBundle,
 }
 
-impl NucleusBundle {
+impl StemBundle {
     pub(super) fn new(
         map_position: MapPosition,
         cell_width: f32,
         start_x: f32,
         start_y: f32,
+        bna: u64
     ) -> Self {
-        let mut i: Vec<_> = vec![
-            Instruction::Create(CellType::Membrane, MapDirection::Up),
-            Instruction::Create(CellType::Membrane, MapDirection::Right),
-            Instruction::Create(CellType::Membrane, MapDirection::Left),
-            Instruction::Create(CellType::Membrane, MapDirection::Down),
-            Instruction::ReplaceSelf(CellType::Chloroplast),
-        ];
-        i.reverse();
-        NucleusBundle {
-            nucleus: Nucleus::new(i),
+        let instructions = decode_bna(bna);
+        StemBundle {
+            nucleus: Stem::new(instructions),
             map_position,
             draw: SpriteBundle {
                 sprite: Sprite {

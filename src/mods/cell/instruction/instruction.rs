@@ -7,9 +7,9 @@ pub enum Instruction {
     // 00
     SelfDestruct,
     // 01
-    Create(CellType, MapDirection),
+    Create(CellType, MapDirection, u64),
     // 10
-    ReplaceSelf(CellType),
+    ReplaceSelf(CellType, u64),
 }
 
 impl Default for Instruction {

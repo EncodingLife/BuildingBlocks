@@ -1,13 +1,13 @@
 use crate::mods::cell::membrane::MembraneBundle;
 use crate::mods::cell::r#type::CellType;
 use crate::mods::cell::MapSettings;
-use crate::mods::cell::NucleusBundle;
+use crate::mods::cell::StemBundle;
 use crate::mods::map::map_position::MapPosition;
 use crate::mods::cell::chloroplast::ChloroplastBundle;
 use bevy::prelude::*;
 
 #[derive(Event, Debug)]
-pub struct CellCreated(pub CellType, pub MapPosition);
+pub struct CellCreated(pub CellType, pub MapPosition, pub u64);
 
 pub fn on_created(
     map_settings: Res<MapSettings>,
@@ -24,11 +24,12 @@ pub fn on_created(
                 start_x,
                 start_y,
             )),
-            CellType::Nucleus => commands.spawn(NucleusBundle::new(
+            CellType::STEM => commands.spawn(StemBundle::new(
                 ev.1,
                 map_settings.cell_width,
                 start_x,
                 start_y,
+                ev.2
             )),
             CellType::Chloroplast => commands.spawn(ChloroplastBundle::new(
                 ev.1,

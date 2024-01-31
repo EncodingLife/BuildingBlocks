@@ -24,7 +24,6 @@ impl Plugin for TickPlugin {
 
 fn tick_timer(mut ev_tick: EventWriter<Ticked>) {
     ev_tick.send(Ticked());
-    println!("Ticking");
 }
 
 fn tick_printer() {

@@ -9,6 +9,6 @@ pub struct MapSettings {
 
 impl Default for MapSettings {
     fn default() -> Self {
-        Self { width: 64, height: 64, cell_width: 16.0 }
+        Self { width: 256, height: 256, cell_width: 8.0 }
     }
 }
