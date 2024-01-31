@@ -15,6 +15,7 @@ mod instruction;
 mod membrane;
 mod stem;
 mod r#type;
+mod bna;
 
 pub struct CellPlugin;
 
