@@ -3,10 +3,9 @@ use bevy::prelude::*;
 use crate::mods::map::{direction::MapDirection, map_position::MapPosition};
 
 use super::{
-    instruction::{
-        instruction::{Instruction, InstructionAction},
-        set::InstructionSet,
-    }, membrane::Membrane, r#type::CellType
+    instruction::{instruction::Instruction, set::InstructionSet},
+    membrane::Membrane,
+    r#type::CellType,
 };
 
 pub mod instruction_execution;
@@ -38,20 +37,12 @@ impl NucleusBundle {
         start_x: f32,
         start_y: f32,
     ) -> Self {
-        let mut i = vec![
-            Instruction {
-                action: InstructionAction::Create(CellType::Membrane, MapDirection::Up),
-            },
-            Instruction {
-                action: InstructionAction::Create(CellType::Membrane, MapDirection::Right),
-            },
-            Instruction {
-                action: InstructionAction::Create(CellType::Membrane, MapDirection::Left),
-            },
-            Instruction {
-                action: InstructionAction::Create(CellType::Membrane, MapDirection::Down),
-            },
-            Instruction { action: InstructionAction::ReplaceSelf(CellType::Chloroplast)}
+        let mut i: Vec<_> = vec![
+            Instruction::Create(CellType::Membrane, MapDirection::Up),
+            Instruction::Create(CellType::Membrane, MapDirection::Right),
+            Instruction::Create(CellType::Membrane, MapDirection::Left),
+            Instruction::Create(CellType::Membrane, MapDirection::Down),
+            Instruction::ReplaceSelf(CellType::Chloroplast),
         ];
         i.reverse();
         NucleusBundle {

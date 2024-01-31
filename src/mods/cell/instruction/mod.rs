@@ -6,6 +6,7 @@ use bevy::prelude::*;
 pub mod events;
 pub mod instruction;
 pub mod set;
+pub mod encoded;
 
 pub struct InstructionPlugin;
 impl Plugin for InstructionPlugin {
