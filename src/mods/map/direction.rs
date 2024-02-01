@@ -11,9 +11,6 @@ pub enum MapDirection {
 
     // 0b11
     Down,
-
-    // 0b100
-    None,
 }
 
 impl Default for MapDirection {
@@ -22,14 +19,26 @@ impl Default for MapDirection {
     }
 }
 
-impl From<u64> for MapDirection {
-    fn from(v: u64) -> Self {
+impl From<u8> for MapDirection {
+    fn from(v: u8) -> Self {
         match v {
-            0b000 => MapDirection::Left,
-            0b001 => MapDirection::Right,
-            0b010 => MapDirection::Up,
-            0b011 => MapDirection::Down,
-            0b100 => MapDirection::None,
+            0b00 => MapDirection::Left,
+            0b01 => MapDirection::Right,
+            0b10 => MapDirection::Up,
+            0b11 => MapDirection::Down,
+            _ => Default::default(),
+        }
+    }
+}
+
+
+impl From<MapDirection> for u8 {
+    fn from(v: MapDirection) -> Self {
+        match v {
+            MapDirection::Left => 0b00,
+            MapDirection::Right => 0b01,
+            MapDirection::Up => 0b10,
+            MapDirection::Down => 0b11,
             _ => Default::default(),
         }
     }

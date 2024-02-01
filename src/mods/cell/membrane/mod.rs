@@ -28,7 +28,7 @@ impl MembraneBundle {
                     custom_size: Some(Vec2::new(cell_width, cell_width)),
                     ..Default::default()
                 },
-                transform: Transform::from_translation(Vec3::new(
+                global_transform: GlobalTransform::from_translation(Vec3::new(
                     start_x + map_position.x as f32 * cell_width,
                     start_y + map_position.y as f32 * cell_width,
                     0.,

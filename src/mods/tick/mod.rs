@@ -4,7 +4,7 @@ use std::time::Duration;
 
 use bevy::{prelude::*, time::common_conditions::on_timer};
 
-const TICK_RATE: u64 = 1;
+const TICK_RATE: u64 = 28;
 
 #[derive(Event)]
 pub struct Ticked();

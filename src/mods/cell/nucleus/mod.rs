@@ -9,42 +9,29 @@ use super::{
     r#type::CellType,
 };
 
-pub mod instruction_execution;
-
-#[derive(Component, Debug)]
-pub struct Stem {
-    current_instruction: u8
-}
-
-impl Stem {
-    fn new(current_instruction: u8) -> Self {
-        Self {
-            current_instruction,
-        }
-    }
-}
+#[derive(Component)]
+pub struct Nucleus;
 
 #[derive(Bundle)]
-pub struct StemBundle {
-    stem: Stem,
+pub struct NucleusBundle {
+    nucleus: Nucleus,
     map_position: MapPosition,
     draw: SpriteBundle,
 }
 
-impl StemBundle {
+impl NucleusBundle {
     pub(super) fn new(
         map_position: MapPosition,
         cell_width: f32,
         start_x: f32,
-        start_y: f32,
-        iref: Option<u8>
+        start_y: f32
     ) -> Self {
-        StemBundle {
-            stem: Stem::new(iref.unwrap_or_default()),
+        NucleusBundle {
+            nucleus: Nucleus,
             map_position,
             draw: SpriteBundle {
                 sprite: Sprite {
-                    color: Color::WHITE,
+                    color: Color::PURPLE,
                     custom_size: Some(Vec2::new(cell_width, cell_width)),
                     ..Default::default()
                 },
