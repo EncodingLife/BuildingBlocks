@@ -10,9 +10,9 @@ use crate::mods::organism::Organism;
 use super::Stem;
 
 pub fn execute_instructions(mut query: Query<(Entity, &Parent, &mut Stem, &MapPosition)>, mut c_writer: EventWriter<CellCreated>, mut sr_writer: EventWriter<SelfReplaced>, o_query: Query<&Organism>) {
-    if !query.is_empty() {
-        println!("Executing instructions for {} stem cells", query.iter().count())
-    }
+    // if !query.is_empty() {
+    //     println!("Executing instructions for {} stem cells", query.iter().count())
+    // }
 
     for (e, p, mut s, position) in query.iter_mut() {
         let instruction = match o_query.get(p.get()) {

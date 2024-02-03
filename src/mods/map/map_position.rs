@@ -1,8 +1,9 @@
 use bevy::ecs::component::Component;
 
+use crate::mods::shared::simulation_settings::{MAP_CELL_HEIGHT, MAP_CELL_WIDTH};
+
 use super::{
     direction::MapDirection,
-    settings::{MAP_SIZE_HEIGHT, MAP_SIZE_WIDTH},
 };
 
 #[derive(Component, Copy, Clone, Debug, PartialEq)]
@@ -19,20 +20,20 @@ impl MapPosition {
     pub fn neighbour(&self, direction: MapDirection) -> Self {
         match direction {
             MapDirection::Left => MapPosition::new(
-                (MAP_SIZE_WIDTH as u32 + self.x - 1) % MAP_SIZE_WIDTH as u32,
+                (MAP_CELL_WIDTH as u32 + self.x - 1) % MAP_CELL_WIDTH as u32,
                 self.y,
             ),
             MapDirection::Right => MapPosition::new(
-                (MAP_SIZE_WIDTH as u32 + self.x + 1) % MAP_SIZE_WIDTH as u32,
+                (MAP_CELL_WIDTH as u32 + self.x + 1) % MAP_CELL_WIDTH as u32,
                 self.y,
             ),
             MapDirection::Up => MapPosition::new(
                 self.x,
-                (MAP_SIZE_HEIGHT as u32 + self.y + 1) % MAP_SIZE_HEIGHT as u32,
+                (MAP_CELL_HEIGHT as u32 + self.y + 1) % MAP_CELL_HEIGHT as u32,
             ),
             MapDirection::Down => MapPosition::new(
                 self.x,
-                (MAP_SIZE_HEIGHT as u32 + self.y - 1) % MAP_SIZE_HEIGHT as u32,
+                (MAP_CELL_HEIGHT as u32 + self.y - 1) % MAP_CELL_HEIGHT as u32,
             ),
         }
     }

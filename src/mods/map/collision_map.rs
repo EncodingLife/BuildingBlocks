@@ -1,21 +1,22 @@
 use bevy::prelude::*;
-use super::{map_position::MapPosition, settings::{MAP_SIZE_HEIGHT, MAP_SIZE_WIDTH}};
+
+use crate::mods::shared::simulation_settings::{MAP_CELL_HEIGHT, MAP_CELL_WIDTH};
 
 #[derive(Resource)]
-pub struct CollisionMap([u8;MAP_SIZE_HEIGHT*MAP_SIZE_WIDTH]);
+pub struct CollisionMap([u8; (MAP_CELL_HEIGHT * MAP_CELL_WIDTH) as usize]);
 
 impl CollisionMap {
     pub fn new() -> Self {
-        Self([0;MAP_SIZE_HEIGHT*MAP_SIZE_WIDTH])
+        Self([0; (MAP_CELL_HEIGHT * MAP_CELL_WIDTH) as usize])
     }
 
-    pub fn get(&self, x: usize, y: usize) -> u8 {
-        assert!(x<MAP_SIZE_WIDTH && y<MAP_SIZE_HEIGHT, "{x},{y}");
-        self.0[(MAP_SIZE_WIDTH*x)+y]
+    pub fn get(&self, x: u16, y: u16) -> u8 {
+        assert!(x < MAP_CELL_WIDTH && y < MAP_CELL_HEIGHT, "{x},{y}");
+        self.0[((MAP_CELL_WIDTH * x) + y) as usize]
     }
 
-    pub fn set(&mut self, x: usize, y: usize, val: u8) {
-        assert!(x<MAP_SIZE_WIDTH && y<MAP_SIZE_HEIGHT, "{x},{y}");
-        self.0[(MAP_SIZE_WIDTH*x)+y] = val;
+    pub fn set(&mut self, x: u16, y: u16, val: u8) {
+        assert!(x < MAP_CELL_WIDTH && y < MAP_CELL_HEIGHT, "{x},{y}");
+        self.0[((MAP_CELL_WIDTH * x) + y) as usize] = val;
     }
 }

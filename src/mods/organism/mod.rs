@@ -1,5 +1,8 @@
+use crate::mods::shared::simulation_settings::{MAP_CELL_HEIGHT, MAP_CELL_WIDTH};
+
 use super::{
-    cell::bna::BNA, map::{map_position::MapPosition, settings::MapSettings}, tick::Ticked
+    cell::bna::BNA, map::map_position::MapPosition,
+    shared::simulation_settings::SimulationSettings, tick::Ticked,
 };
 use bevy::prelude::*;
 
@@ -21,13 +24,13 @@ pub struct Organism {
 pub struct OrganismBundle {
     organism: Organism,
     global_transform: GlobalTransform,
-    invis: InheritedVisibility
+    invis: InheritedVisibility,
 }
 
-fn create_test_organism(map_settings: Res<MapSettings>, mut commands: Commands, mut tick_ev_writer: EventWriter<Ticked>) {
-    let start_x = (map_settings.width as f32 * map_settings.cell_width) / -2.0;
-    let start_y = (map_settings.height as f32 * map_settings.cell_width) / -2.0;
-
+fn create_test_organism(
+    mut commands: Commands,
+    mut tick_ev_writer: EventWriter<Ticked>,
+) {
     // commands.spawn(OrganismBundle {
     //     organism: Organism {
     //         bna: BNA::rand(),
@@ -38,10 +41,10 @@ fn create_test_organism(map_settings: Res<MapSettings>, mut commands: Commands, 
     // });
 
     // return;
-    let n = 15;
+    let n = 10;
 
-    let x_step = map_settings.width / n;
-    let y_step = map_settings.height / n;
+    let x_step = MAP_CELL_WIDTH / n;
+    let y_step = MAP_CELL_HEIGHT / n;
 
     println!("{x_step}:{y_step}");
 
@@ -52,15 +55,17 @@ fn create_test_organism(map_settings: Res<MapSettings>, mut commands: Commands, 
             commands.spawn(OrganismBundle {
                 organism: Organism {
                     bna: BNA::rand(),
-                    starting_position: MapPosition::new(x_step * (1 + i), y_step * (1 + j)),
+                    starting_position: MapPosition::new(
+                        (x_step * (1 + i)).into(),
+                        (y_step * (1 + j)).into(),
+                    ),
                 },
                 global_transform: GlobalTransform::IDENTITY,
-                invis: InheritedVisibility::VISIBLE
+                invis: InheritedVisibility::VISIBLE,
             });
-            c+=1;
+            c += 1;
         }
     }
     println!("Total orgs: {c}");
     tick_ev_writer.send(Ticked());
-
 }
