@@ -1,14 +1,10 @@
 use std::ops::{Index, IndexMut};
 
-
 use rand::Rng;
 
 use crate::mods::map::direction::MapDirection;
 
-use super::{
-    instruction::{instruction::Instruction},
-    r#type::CellType,
-};
+use super::{instruction::instruction::Instruction, r#type::CellType};
 
 pub const BNA_LENGTH: usize = 32;
 
@@ -18,10 +14,23 @@ pub struct BNA {
 }
 
 impl BNA {
-    pub const GREENIE: Self = Self{data:[6;BNA_LENGTH]};
+    pub const GREENIE: Self = Self {
+        data: [6; BNA_LENGTH],
+    };
     pub const WALKER: Self = {
-        let mut data = [0;BNA_LENGTH];
+        let mut data = [0; BNA_LENGTH];
         data[0] = 3;
+        Self { data }
+    };
+
+    pub const SNAKE: Self = {
+        let mut data = [0b00000110; BNA_LENGTH];
+
+        data[0] = 19; // Instruction::Create(MapDirection::Right, 2).encode();
+        data[2] = 37; // Instruction::Create(MapDirection::Up, 4).encode();
+        data[4] = 51; // Instruction::Create(MapDirection::Right, 6).encode();
+        data[6] = 7; //Instruction::Create(MapDirection::Down, 0).encode();
+
         Self { data }
     };
 
@@ -32,10 +41,18 @@ impl BNA {
     }
 
     pub fn get_instruction(&self, index: u8) -> Instruction {
+        if index >= BNA_LENGTH as u8 {
+            return Instruction::default()
+        }
+
         let ins = self[index.into()];
+
         match ins & 0b1 {
             0b0 => Instruction::ReplaceSelf(get_cell_type(ins)),
-            0b1 => Instruction::Create(get_map_direction(ins), get_instruction_reference(ins)),
+            0b1 => Instruction::Create(
+                get_map_direction(ins),
+                index + get_instruction_reference_offset(ins),
+            ),
             _ => Instruction::ReplaceSelf(CellType::None),
         }
     }
@@ -49,7 +66,7 @@ fn get_map_direction(ins: u8) -> MapDirection {
     ((ins >> 1) & 0b11).into()
 }
 
-fn get_instruction_reference(ins: u8) -> u8 {
+fn get_instruction_reference_offset(ins: u8) -> u8 {
     ((ins >> 3) & 0b11111).into()
 }
 

@@ -2,9 +2,9 @@ use bevy::ecs::system::Resource;
 
 pub const WINDOW_WIDTH: f32 = 1280.0;
 pub const WINDOW_HEIGHT: f32 = 720.0;
-pub const MAP_CELL_WIDTH: u16 = 128;
-pub const MAP_CELL_HEIGHT: u16 = 128;
-pub const TICK_RATE: u64 = 4;
+pub const MAP_CELL_WIDTH: u16 = 180;
+pub const MAP_CELL_HEIGHT: u16 = 180;
+pub const TICK_RATE: u64 = 8;
 
 
 

@@ -3,11 +3,11 @@ use bevy::prelude::*;
 use crate::mods::shared::simulation_settings::{MAP_CELL_HEIGHT, MAP_CELL_WIDTH};
 
 #[derive(Resource)]
-pub struct CollisionMap([u8; (MAP_CELL_HEIGHT * MAP_CELL_WIDTH) as usize]);
+pub struct CollisionMap([u8; (MAP_CELL_HEIGHT as usize * MAP_CELL_WIDTH as usize)]);
 
 impl CollisionMap {
     pub fn new() -> Self {
-        Self([0; (MAP_CELL_HEIGHT * MAP_CELL_WIDTH) as usize])
+        Self([0; (MAP_CELL_HEIGHT as usize * MAP_CELL_WIDTH as usize)])
     }
 
     pub fn get(&self, x: u16, y: u16) -> u8 {

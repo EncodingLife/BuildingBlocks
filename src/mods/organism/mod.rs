@@ -1,7 +1,7 @@
 use crate::mods::shared::simulation_settings::{MAP_CELL_HEIGHT, MAP_CELL_WIDTH};
 
 use super::{
-    cell::bna::BNA, map::map_position::MapPosition, tick::Ticked,
+    cell::bna::BNA, map::map_position::MapPosition,
 };
 use bevy::prelude::*;
 
@@ -28,7 +28,6 @@ pub struct OrganismBundle {
 
 fn create_test_organism(
     mut commands: Commands,
-    mut tick_ev_writer: EventWriter<Ticked>,
 ) {
     // commands.spawn(OrganismBundle {
     //     organism: Organism {
@@ -40,7 +39,7 @@ fn create_test_organism(
     // });
 
     // return;
-    let n = 10;
+    let n = 60;
 
     let x_step = MAP_CELL_WIDTH / n;
     let y_step = MAP_CELL_HEIGHT / n;
@@ -66,5 +65,4 @@ fn create_test_organism(
         }
     }
     println!("Total orgs: {c}");
-    tick_ev_writer.send(Ticked());
 }
