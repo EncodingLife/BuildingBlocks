@@ -1,12 +1,12 @@
 use std::ops::{Index, IndexMut};
 
-use bevy::utils::petgraph::data::Create;
+
 use rand::Rng;
 
 use crate::mods::map::direction::MapDirection;
 
 use super::{
-    instruction::{events::self_replaced::SelfReplaced, instruction::Instruction},
+    instruction::{instruction::Instruction},
     r#type::CellType,
 };
 

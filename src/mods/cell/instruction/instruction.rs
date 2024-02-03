@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-use crate::mods::{cell::{bna::BNA, r#type::CellType}, map::direction::MapDirection};
+use crate::mods::{cell::{r#type::CellType}, map::direction::MapDirection};
 
 
 // Every Instruction is 8 bits

@@ -16,7 +16,7 @@ pub(super) fn setup_map(mut commands: Commands, mut images: ResMut<Assets<Image>
         height: SIZE.1,
         depth_or_array_layers: 1,
     };
-    let mut image = Image::new_fill(
+    let image = Image::new_fill(
         e,
         TextureDimension::D2,
         &[255, 0, 0, 255],

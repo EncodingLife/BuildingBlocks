@@ -1,13 +1,8 @@
 use bevy::prelude::*;
 
-use crate::mods::map::{direction::MapDirection, map_position::MapPosition};
+use crate::mods::map::{map_position::MapPosition};
 
-use super::{
-    bna::BNA,
-    instruction::{instruction::Instruction, set::InstructionSet},
-    membrane::Membrane,
-    r#type::CellType,
-};
+
 
 pub mod instruction_execution;
 

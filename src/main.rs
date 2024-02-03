@@ -3,15 +3,12 @@ use mods::{
     cell::CellPlugin,
     interface::InterfacePlugin,
     map::MapPlugin,
-    organism::{Organism, OrganismPlugin},
+    organism::{OrganismPlugin},
     shared::{simulation_settings::{WINDOW_HEIGHT, WINDOW_WIDTH}, SharedPlugin},
     tick::TickPlugin,
 };
 
-use crate::mods::{
-    cell::{instruction::instruction::Instruction, r#type::CellType},
-    map::direction::MapDirection,
-};
+
 
 mod mods;
 

@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::mods::{cell::stem::Stem, map::map_position::MapPosition, organism::Organism};
+use crate::mods::{cell::stem::Stem, organism::Organism};
 
 pub struct SimulationInfoPlugin;
 
@@ -153,7 +153,7 @@ pub(super) fn update_inst_text(
 }
 
 pub fn count_instructions(
-    mut query: Query<&Stem>,
+    query: Query<&Stem>,
     mut simulation_diagnostics: ResMut<SimulationDiagnosticInfo>,
 ) {
     // if !query.is_empty() {
@@ -163,7 +163,7 @@ pub fn count_instructions(
 }
 
 pub fn count_organisms(
-    mut query: Query<&Organism>,
+    query: Query<&Organism>,
     mut simulation_diagnostics: ResMut<SimulationDiagnosticInfo>,
 ) {
     // if !query.is_empty() {

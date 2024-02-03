@@ -1,14 +1,12 @@
 use self::{
-    bna::BNA,
     instruction::InstructionPlugin,
     spawn::spawn_stem_cell,
     stem::{instruction_execution::execute_instructions, StemBundle},
 };
 use bevy::prelude::*;
-use rand::RngCore;
+
 
 use super::{
-    map::{self, map_position::MapPosition},
     tick::Ticked,
 };
 

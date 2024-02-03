@@ -2,7 +2,6 @@ use bevy::prelude::*;
 
 use self::{
     fps::{fps_counter_showhide, fps_text_update_system, setup_fps_counter},
-    map_draw::setup_map,
     simulation_info::SimulationInfoPlugin,
 };
 

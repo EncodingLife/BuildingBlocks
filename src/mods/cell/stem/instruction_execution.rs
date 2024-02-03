@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use crate::mods::cell::bna::BNA_LENGTH;
 use crate::mods::cell::instruction::instruction::Instruction;
-use crate::mods::cell::instruction::events::self_destructed::SelfDestructed;
+
 use crate::mods::cell::instruction::events::created::CellCreated;
 use crate::mods::map::map_position::MapPosition;
 use crate::mods::cell::instruction::events::self_replaced::SelfReplaced;

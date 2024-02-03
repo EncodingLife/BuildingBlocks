@@ -1,11 +1,11 @@
-use crate::mods::cell::bna::BNA;
-use crate::mods::cell::chloroplast::ChloroplastBundle;
-use crate::mods::cell::membrane::MembraneBundle;
+
+
+
 use crate::mods::cell::r#type::CellType;
 use crate::mods::cell::StemBundle;
 use crate::mods::map::collision_map::CollisionMap;
 use crate::mods::map::map_position::MapPosition;
-use crate::mods::shared::simulation_settings::{self, SimulationSettings, MAP_CELL_HEIGHT, MAP_CELL_WIDTH};
+use crate::mods::shared::simulation_settings::{SimulationSettings, MAP_CELL_HEIGHT, MAP_CELL_WIDTH};
 use bevy::prelude::*;
 
 #[derive(Event, Debug)]
@@ -13,7 +13,7 @@ pub struct CellCreated(pub Entity, pub MapPosition, pub u8);
 
 pub fn on_created(
     mut collision_map: ResMut<CollisionMap>,
-    mut simulation_settings: Res<SimulationSettings>,
+    simulation_settings: Res<SimulationSettings>,
     mut commands: Commands,
     mut event_reader: EventReader<CellCreated>,
 ) {

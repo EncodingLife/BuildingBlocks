@@ -1,8 +1,7 @@
 use crate::mods::shared::simulation_settings::{MAP_CELL_HEIGHT, MAP_CELL_WIDTH};
 
 use super::{
-    cell::bna::BNA, map::map_position::MapPosition,
-    shared::simulation_settings::SimulationSettings, tick::Ticked,
+    cell::bna::BNA, map::map_position::MapPosition, tick::Ticked,
 };
 use bevy::prelude::*;
 
