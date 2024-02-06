@@ -7,7 +7,7 @@ use mods::{
     shared::{simulation_settings::{WINDOW_HEIGHT, WINDOW_WIDTH}, SharedPlugin},
     tick::TickPlugin,
 };
-
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 
 mod mods;
@@ -30,5 +30,6 @@ fn main() {
             SharedPlugin
         ))
         .add_plugins(FrameTimeDiagnosticsPlugin::default())
+        .add_plugins(WorldInspectorPlugin::new())
         .run();
 }

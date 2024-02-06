@@ -1,11 +1,8 @@
 use bevy::prelude::*;
 
-use crate::mods::{
-    organism::Organism,
-    shared::simulation_settings::{SimulationSettings, MAP_CELL_HEIGHT, MAP_CELL_WIDTH},
-};
+use crate::mods::{organism::Organism, shared::simulation_settings::*};
 
-use super::stem::StemBundle;
+use super::{organelle::OrganelleBundle, stem::StemBundle};
 
 pub(super) fn spawn_stem_cell(
     simulation_settings: Res<SimulationSettings>,
@@ -20,12 +17,16 @@ pub(super) fn spawn_stem_cell(
     }
     for (e, o) in query.iter() {
         let child = commands
-            .spawn(StemBundle::new(
-                o.starting_position,
-                simulation_settings.cell_size,
-                start_x,
-                start_y,
-                None,
+            .spawn(OrganelleBundle::new(
+                StemBundle::new(
+                    o.starting_position,
+                    simulation_settings.cell_size,
+                    start_x,
+                    start_y,
+                    None,
+                ),
+                ORGANELLE_STEM_TICK_RATE,
+                TEMP_STARTING_ENERGY,
             ))
             .id();
         commands.entity(e).push_children(&[child]);

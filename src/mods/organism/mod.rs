@@ -1,15 +1,18 @@
 use crate::mods::shared::simulation_settings::{MAP_CELL_HEIGHT, MAP_CELL_WIDTH};
 
-use super::{
-    cell::bna::BNA, map::map_position::MapPosition,
-};
+use self::organism_death::organelle_died;
+
+use super::{cell::bna::BNA, map::map_position::MapPosition};
 use bevy::prelude::*;
+
+mod organism_death;
 
 pub struct OrganismPlugin;
 
 impl Plugin for OrganismPlugin {
     fn build(&self, app: &mut bevy::prelude::App) {
-        app.add_systems(Startup, create_test_organism);
+        app.add_systems(Startup, create_test_organism)
+            .add_systems(Update, organelle_died);
     }
 }
 
@@ -26,9 +29,7 @@ pub struct OrganismBundle {
     invis: InheritedVisibility,
 }
 
-fn create_test_organism(
-    mut commands: Commands,
-) {
+fn create_test_organism(mut commands: Commands) {
     // commands.spawn(OrganismBundle {
     //     organism: Organism {
     //         bna: BNA::rand(),
@@ -39,7 +40,7 @@ fn create_test_organism(
     // });
 
     // return;
-    let n = 60;
+    let n = 2;
 
     let x_step = MAP_CELL_WIDTH / n;
     let y_step = MAP_CELL_HEIGHT / n;

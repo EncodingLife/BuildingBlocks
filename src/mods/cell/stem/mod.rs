@@ -1,14 +1,12 @@
 use bevy::prelude::*;
 
-use crate::mods::map::{map_position::MapPosition};
-
-
+use crate::mods::map::map_position::MapPosition;
 
 pub mod instruction_execution;
 
 #[derive(Component, Debug)]
 pub struct Stem {
-    current_instruction: u8
+    current_instruction: u8,
 }
 
 impl Stem {
@@ -32,7 +30,7 @@ impl StemBundle {
         cell_width: f32,
         start_x: f32,
         start_y: f32,
-        iref: Option<u8>
+        iref: Option<u8>,
     ) -> Self {
         StemBundle {
             stem: Stem::new(iref.unwrap_or_default()),
