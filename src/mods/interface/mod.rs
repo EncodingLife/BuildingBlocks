@@ -6,7 +6,6 @@ use self::{
 };
 
 mod fps;
-mod map_draw;
 mod simulation_info;
 
 pub struct InterfacePlugin;
@@ -14,6 +13,7 @@ pub struct InterfacePlugin;
 impl Plugin for InterfacePlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins(SimulationInfoPlugin)
+            .insert_resource(ClearColor(Color::BLACK))
             .add_systems(Startup, (setup_fps_counter, setup_camera))
             .add_systems(Update, (fps_text_update_system, fps_counter_showhide));
     }

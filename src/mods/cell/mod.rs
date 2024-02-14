@@ -1,36 +1,32 @@
-use self::{
-    instruction::InstructionPlugin,
-    maintenance::{consume_energy_for_maintenance, organelle_died::OrganelleDied},
-    spawn::spawn_stem_cell,
-    stem::{instruction_execution::execute_instructions, StemBundle},
-};
 use bevy::prelude::*;
 
-use super::tick::Ticked;
+use self::{
+    behaviours::{cell_death::cell_death_due_to_no_organelle, cell_spawn::cell_spawned},
+    bna::*,
+    organelle::OrganellePlugin,
+};
 
+use super::simulation::map::position::MapPosition;
+
+mod behaviours;
 pub mod bna;
-mod chloroplast;
-mod compound_storage;
-pub mod instruction;
-pub mod maintenance;
-mod membrane;
-mod nucleus;
-mod spawn;
-pub mod stem;
-mod structure;
+pub mod cell_bundle;
 pub mod organelle;
-pub mod r#type;
 
 pub struct CellPlugin;
 
 impl Plugin for CellPlugin {
-    fn build(&self, app: &mut bevy::prelude::App) {
-        app.add_plugins(InstructionPlugin)
-            .insert_resource(ClearColor(Color::BLACK))
-            .add_systems(Update, spawn_stem_cell)
-            .add_systems(
-                Update,
-                (execute_instructions, consume_energy_for_maintenance).run_if(on_event::<Ticked>()),
-            );
+    fn build(&self, app: &mut App) {
+        app.add_event::<CellSpawned>()
+            .add_plugins(OrganellePlugin)
+            .add_systems(Update, (cell_death_due_to_no_organelle, cell_spawned));
     }
 }
+
+#[derive(Component)]
+pub struct Cell {
+    pub bna: BNA,
+}
+
+#[derive(Event)]
+pub struct CellSpawned(pub BNA, pub MapPosition);

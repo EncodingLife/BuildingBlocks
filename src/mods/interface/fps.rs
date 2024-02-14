@@ -1,4 +1,7 @@
-use bevy::{diagnostic::{DiagnosticsStore, FrameTimeDiagnosticsPlugin}, prelude::*};
+use bevy::{
+    diagnostic::{DiagnosticsStore, FrameTimeDiagnosticsPlugin},
+    prelude::*,
+};
 
 /// Marker to find the container entity so we can show/hide the FPS counter
 #[derive(Component)]
@@ -75,7 +78,7 @@ pub(super) fn setup_fps_counter(mut commands: Commands) {
     commands.entity(root).push_children(&[text_fps]);
 }
 
-pub(super)fn fps_text_update_system(
+pub(super) fn fps_text_update_system(
     diagnostics: Res<DiagnosticsStore>,
     mut query: Query<&mut Text, With<FpsText>>,
 ) {
@@ -115,7 +118,10 @@ pub(super)fn fps_text_update_system(
 }
 
 /// Toggle the FPS counter when pressing F12
-pub(super) fn fps_counter_showhide(mut q: Query<&mut Visibility, With<FpsRoot>>, kbd: Res<Input<KeyCode>>) {
+pub(super) fn fps_counter_showhide(
+    mut q: Query<&mut Visibility, With<FpsRoot>>,
+    kbd: Res<Input<KeyCode>>,
+) {
     if kbd.just_pressed(KeyCode::F12) {
         let mut vis = q.single_mut();
         *vis = match *vis {

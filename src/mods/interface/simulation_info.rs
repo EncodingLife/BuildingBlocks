@@ -1,6 +1,7 @@
+use crate::mods::cell::{organelle::types::*, Cell};
+use crate::mods::interface::simulation_info::builder::*;
+use crate::mods::interface::simulation_info::nucleus::*;
 use bevy::prelude::*;
-
-use crate::mods::{cell::stem::Stem, organism::Organism};
 
 pub struct SimulationInfoPlugin;
 
@@ -8,14 +9,14 @@ impl Plugin for SimulationInfoPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(SimulationDiagnosticInfo::default())
             .add_systems(Startup, setup_simulation_info)
-            .add_systems(Update, (count_organisms, count_instructions))
+            .add_systems(Update, (count_cells, count_instructions))
             .add_systems(PostUpdate, (update_org_text, update_inst_text));
     }
 }
 
 #[derive(Resource, Default)]
 pub struct SimulationDiagnosticInfo {
-    org_count: usize,
+    cell_count: usize,
     instruction_count: usize,
 }
 
@@ -63,7 +64,7 @@ pub(super) fn setup_simulation_info(mut commands: Commands) {
                 // use two sections, so it is easy to update just the number
                 text: Text::from_sections([
                     TextSection {
-                        value: "Organisms: \t".into(),
+                        value: "Cells: \t".into(),
                         style: TextStyle {
                             font_size: 16.0,
                             color: Color::WHITE,
@@ -128,7 +129,7 @@ pub(super) fn setup_simulation_info(mut commands: Commands) {
         .push_children(&[org_count_text, instruction_count_text]);
 }
 
-pub(super) fn update_org_text(
+fn update_org_text(
     diagnostics: Res<SimulationDiagnosticInfo>,
     mut query: Query<&mut Text, With<OrgCount>>,
 ) {
@@ -136,11 +137,11 @@ pub(super) fn update_org_text(
         // Format the number as to leave space for 4 digits, just in case,
         // right-aligned and rounded. This helps readability when the
         // number changes rapidly.
-        text.sections[1].value = format!("{:>4.0}", diagnostics.org_count);
+        text.sections[1].value = format!("{:>4.0}", diagnostics.cell_count);
     }
 }
 
-pub(super) fn update_inst_text(
+fn update_inst_text(
     diagnostics: Res<SimulationDiagnosticInfo>,
     mut query: Query<&mut Text, With<InstructionCount>>,
 ) {
@@ -152,22 +153,20 @@ pub(super) fn update_inst_text(
     }
 }
 
-pub fn count_instructions(
-    query: Query<&Stem>,
+fn count_instructions(
+    query: Query<(Option<&Builder>, Option<&Nucleus>)>,
     mut simulation_diagnostics: ResMut<SimulationDiagnosticInfo>,
 ) {
     // if !query.is_empty() {
     //     println!("Executing instructions for {} stem cells", query.iter().count())
     // }
+    simulation_diagnostics.instruction_count = 0;
     simulation_diagnostics.instruction_count = query.iter().count();
 }
 
-pub fn count_organisms(
-    query: Query<&Organism>,
-    mut simulation_diagnostics: ResMut<SimulationDiagnosticInfo>,
-) {
+fn count_cells(query: Query<&Cell>, mut simulation_diagnostics: ResMut<SimulationDiagnosticInfo>) {
     // if !query.is_empty() {
     //     println!("Executing instructions for {} stem cells", query.iter().count())
     // }
-    simulation_diagnostics.org_count = query.iter().count();
+    simulation_diagnostics.cell_count = query.iter().count();
 }

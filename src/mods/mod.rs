@@ -1,7 +1,4 @@
-pub mod map;
-pub mod tick;
 pub mod cell;
-pub mod organism;
+pub mod debug_setup;
 pub mod interface;
-pub mod shared;
-pub mod elements;
+pub mod simulation;

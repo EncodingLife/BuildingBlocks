@@ -1,14 +1,11 @@
 use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*};
-use mods::{
-    cell::CellPlugin,
-    interface::InterfacePlugin,
-    map::MapPlugin,
-    organism::{OrganismPlugin},
-    shared::{simulation_settings::{WINDOW_HEIGHT, WINDOW_WIDTH}, SharedPlugin},
-    tick::TickPlugin,
-};
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
-
+use mods::{
+    cell::CellPlugin, debug_setup::*, interface::InterfacePlugin, simulation::{
+        settings::{WINDOW_HEIGHT, WINDOW_WIDTH},
+        SimulationPlugin,
+    }
+};
 
 mod mods;
 
@@ -22,14 +19,12 @@ fn main() {
                 }),
                 ..Default::default()
             }),
-            MapPlugin,
-            TickPlugin,
             CellPlugin,
-            OrganismPlugin,
             InterfacePlugin,
-            SharedPlugin
+            SimulationPlugin,
         ))
         .add_plugins(FrameTimeDiagnosticsPlugin::default())
         .add_plugins(WorldInspectorPlugin::new())
+        .add_systems(Startup, debug_setup)
         .run();
 }
