@@ -10,6 +10,10 @@ use crate::mods::{
 };
 use bevy::prelude::*;
 
+use super::change_request_steps::{
+    get_pipeline, OrganelleChangeRequestApprovalHandler, OrganelleChangeRequestContext,
+};
+
 #[derive(Event)]
 pub struct OrganelleCreated(pub MapPosition, pub u8, pub Entity, pub OrganelleType);
 
@@ -26,31 +30,24 @@ pub fn handle_organelle_structural_change_requests(
     mut otc_writer: EventWriter<OrganelleTypeChange>,
     mut or_writer: EventWriter<OrganelleRemoved>,
 ) {
+    let pipeline = get_pipeline();
+    let context = OrganelleChangeRequestContext { map: map.as_ref() };
     let valid_instructions = ev_reader
         .read()
-        .filter(
-            |&OrganelleStructuralChangeRequest {
-                 instruction: i,
-                 source: e,
-                 parent: p,
-                 target_pos: mp,
-             }| match i {
-                BuilderInstruction::ReplaceSelf(t) => true,
-                BuilderInstruction::Create(d, iref) => {
-                    let pos = mp.neighbour(*d);
-                    map.get(pos.x.try_into().unwrap(), pos.y.try_into().unwrap()) == 0
-                }
-            },
-        )
+        .filter(|&change| pipeline.handle(change, &context))
         .collect::<Vec<&OrganelleStructuralChangeRequest>>();
 
     let grouped = grouped_by_map_position(valid_instructions.clone());
 
     let solved: Vec<OrganelleStructuralChangeRequest> =
-        grouped.iter().map(|(p, ins)| *ins[0]).collect(); // TODO: Add actual solving logic
+        grouped.iter().map(|(_, ins)| *ins[0]).collect(); // TODO: Add actual solving logic
 
     if valid_instructions.iter().count() != solved.iter().count() {
-        println!("conflict resolution trimmed instructions: {}->{}", valid_instructions.iter().count(), solved.iter().count());
+        println!(
+            "conflict resolution trimmed instructions: {}->{}",
+            valid_instructions.iter().count(),
+            solved.iter().count()
+        );
     }
 
     for &OrganelleStructuralChangeRequest {
@@ -58,6 +55,7 @@ pub fn handle_organelle_structural_change_requests(
         source: e,
         parent: p,
         target_pos: mp,
+        source_energy: _
     } in solved.iter()
     {
         match i {

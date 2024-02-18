@@ -1,3 +1,7 @@
+use self::{builder::Builder, chloroplast::Chloroplast, mitochondria::Mitochondria, nucleus::Nucleus};
+
+use super::{OrganelleFunctions, OrganelleStructure};
+
 pub mod builder;
 pub mod chloroplast;
 pub mod nucleus;
@@ -10,6 +14,18 @@ pub enum OrganelleType {
     Chloroplast,
     Nucleus,
     Mitochondria
+}
+
+impl OrganelleType {
+    pub fn get_structure(&self) -> OrganelleStructure {
+        match self {
+            OrganelleType::None => panic!("Cant get structure of None"),
+            OrganelleType::Builder => Builder::get_structure(),
+            OrganelleType::Chloroplast => Chloroplast::get_structure(),
+            OrganelleType::Nucleus => Nucleus::get_structure(),
+            OrganelleType::Mitochondria => Mitochondria::get_structure(),
+        }
+    }
 }
 
 impl Default for OrganelleType {

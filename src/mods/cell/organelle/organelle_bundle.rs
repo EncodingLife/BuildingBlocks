@@ -7,7 +7,7 @@ use crate::mods::simulation::settings::MAP_CELL_SIZE;
 #[derive(Bundle)]
 pub struct OrganelleBundle<T>
 where
-    T: OrganelleStructure,
+    T: OrganelleFunctions,
     T: Bundle,
 {
     organelle_marker: T,
@@ -20,18 +20,17 @@ where
 impl<T> OrganelleBundle<T>
 where
     T: Bundle,
-    T: OrganelleStructure,
     T: OrganelleFunctions,
 {
     pub fn new(marker: T, map_position: MapPosition) -> Self {
         Self {
             organelle_marker: marker,
             sustenance: T::get_sustenance(),
-            utilizable_energy_store: UtilizableEnergy(T::STARTING_UTILIZABLE_ENERGY),
+            utilizable_energy_store: UtilizableEnergy(T::get_structure().starting_energy),
             map_position,
             sprite: SpriteBundle {
                 sprite: Sprite {
-                    color: T::COLOUR,
+                    color: T::get_structure().color,
                     custom_size: Some(Vec2::new(MAP_CELL_SIZE, MAP_CELL_SIZE)),
                     ..Default::default()
                 },

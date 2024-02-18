@@ -7,6 +7,7 @@ use crate::mods::{
             builder::Builder, chloroplast::Chloroplast, mitochondria::Mitochondria,
             nucleus::Nucleus, OrganelleType,
         },
+        utilizable_energy::UtilizableEnergy,
         OrganelleStructure,
     },
     simulation::map::collision::CollisionMap,
@@ -42,11 +43,7 @@ pub fn organelle_created(
             None => panic!("get parent resulted in None"),
         }
 
-        collision_map.set(
-            position.x as u16,
-            position.y as u16,
-            (*t).into(),
-        );
+        collision_map.set(position.x as u16, position.y as u16, (*t).into());
     }
 }
 
@@ -54,7 +51,7 @@ pub fn organelle_type_changed(
     mut commands: Commands,
     mut ev_reader: EventReader<OrganelleTypeChange>,
     mut collision_map: ResMut<CollisionMap>,
-    mut sprite_query: Query<&mut Sprite>,
+    mut organelle_query: Query<(&mut Sprite, &mut UtilizableEnergy)>,
 ) {
     for &OrganelleTypeChange(entity, o_type, instruction_index, mp) in ev_reader.read() {
         commands
@@ -62,7 +59,7 @@ pub fn organelle_type_changed(
             .remove::<Builder>()
             .remove::<Chloroplast>()
             .remove::<Nucleus>();
-        let c = match o_type {
+        let (new_colour, used_energy) = match o_type {
             OrganelleType::None => {
                 panic!("Type cannot be changed to None, should be a removed event")
             }
@@ -70,23 +67,38 @@ pub fn organelle_type_changed(
                 commands
                     .entity(entity)
                     .insert(Builder { instruction_index });
-                Builder::COLOUR
+                (
+                    Builder::STRUCTURE.color,
+                    Builder::STRUCTURE.spawn_energy_cost,
+                )
             }
             OrganelleType::Chloroplast => {
                 commands.entity(entity).insert(Chloroplast);
-                Chloroplast::COLOUR
+                (
+                    Chloroplast::STRUCTURE.color,
+                    Chloroplast::STRUCTURE.spawn_energy_cost,
+                )
             }
             OrganelleType::Nucleus => {
                 commands.entity(entity).insert(Nucleus);
-                Nucleus::COLOUR
+                (
+                    Nucleus::STRUCTURE.color,
+                    Nucleus::STRUCTURE.spawn_energy_cost,
+                )
             }
             OrganelleType::Mitochondria => {
                 commands.entity(entity).insert(Mitochondria);
-                Mitochondria::COLOUR
+                (
+                    Mitochondria::STRUCTURE.color,
+                    Mitochondria::STRUCTURE.spawn_energy_cost,
+                )
             }
         };
-        match sprite_query.get_mut(entity) {
-            Ok(mut s) => s.color = c,
+        match organelle_query.get_mut(entity) {
+            Ok((mut s, mut ue)) => {
+                s.color = new_colour;
+                ue.0 = ue.0.checked_sub(used_energy).unwrap();
+            }
             Err(_) => panic!("Entity being changes doesnt exist"),
         }
 

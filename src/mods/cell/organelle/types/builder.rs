@@ -9,19 +9,22 @@ pub struct Builder {
 }
 
 impl Builder {
+    pub const STRUCTURE: OrganelleStructure = OrganelleStructure {
+        color: Color::ANTIQUE_WHITE,
+        starting_energy: 5,
+        spawn_energy_cost: 2
+    };
+
     pub fn increment(&mut self) {
         self.instruction_index = (self.instruction_index + 1) % (BNA_LENGTH as u8);
     }
 }
 
-impl OrganelleStructure for Builder {
-    const COLOUR: Color = Color::WHITE;
-
-    const STARTING_UTILIZABLE_ENERGY: u16 = 5;
-}
-
 impl OrganelleFunctions for Builder {
     fn get_sustenance() -> Sustenance {
         Sustenance::new(10)
+    }
+    fn get_structure() -> OrganelleStructure {
+        Self::STRUCTURE
     }
 }

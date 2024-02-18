@@ -40,6 +40,10 @@ impl CollisionMap {
         self.occupancy[Self::to_1_d(x, y)]
     }
 
+    pub fn empty(&self, mp: MapPosition) -> bool {
+        self.occupancy[Self::to_1_d(mp.x.try_into().unwrap(), mp.y.try_into().unwrap())] == 0
+    }
+
     pub fn set(&mut self, x: u16, y: u16, val: u8) {
         assert!(x < MAP_CELL_WIDTH && y < MAP_CELL_HEIGHT, "{x},{y}");
         self.occupancy[Self::to_1_d(x, y)] = val;

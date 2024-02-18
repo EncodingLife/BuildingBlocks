@@ -15,15 +15,17 @@ pub mod organelle_bundle;
 pub mod organelle_structural_change_request;
 mod sustenance;
 pub mod types;
-mod utilizable_energy;
+pub mod utilizable_energy;
 
-pub trait OrganelleStructure {
-    const COLOUR: Color;
-    const STARTING_UTILIZABLE_ENERGY: u16;
+pub struct OrganelleStructure {
+    pub color: Color,
+    pub starting_energy: u16,
+    pub spawn_energy_cost: u16
 }
 
 pub trait OrganelleFunctions {
     fn get_sustenance() -> Sustenance;
+    fn get_structure() -> OrganelleStructure;
 }
 
 pub struct OrganellePlugin;
