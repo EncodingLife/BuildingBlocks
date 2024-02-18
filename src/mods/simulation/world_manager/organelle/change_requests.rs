@@ -11,7 +11,7 @@ use crate::mods::{
 use bevy::prelude::*;
 
 #[derive(Event)]
-pub struct OrganelleCreated(pub MapPosition, pub u8, pub Entity);
+pub struct OrganelleCreated(pub MapPosition, pub u8, pub Entity, pub OrganelleType);
 
 #[derive(Event)]
 pub struct OrganelleTypeChange(pub Entity, pub OrganelleType, pub u8, pub MapPosition);
@@ -38,23 +38,19 @@ pub fn handle_organelle_structural_change_requests(
                 BuilderInstruction::ReplaceSelf(t) => true,
                 BuilderInstruction::Create(d, iref) => {
                     let pos = mp.neighbour(*d);
-                    println!(
-                        "target_pos {pos:?} is {}",
-                        map.get(pos.x.try_into().unwrap(), pos.y.try_into().unwrap())
-                    );
                     map.get(pos.x.try_into().unwrap(), pos.y.try_into().unwrap()) == 0
                 }
             },
         )
         .collect::<Vec<&OrganelleStructuralChangeRequest>>();
 
-    let grouped = grouped_by_map_position(valid_instructions);
+    let grouped = grouped_by_map_position(valid_instructions.clone());
 
     let solved: Vec<OrganelleStructuralChangeRequest> =
         grouped.iter().map(|(p, ins)| *ins[0]).collect(); // TODO: Add actual solving logic
 
-    if solved.iter().any(|_| true) {
-        println!("solved: {}", solved.iter().count());
+    if valid_instructions.iter().count() != solved.iter().count() {
+        println!("conflict resolution trimmed instructions: {}->{}", valid_instructions.iter().count(), solved.iter().count());
     }
 
     for &OrganelleStructuralChangeRequest {
@@ -64,10 +60,9 @@ pub fn handle_organelle_structural_change_requests(
         target_pos: mp,
     } in solved.iter()
     {
-        println!("{i:?} with {mp:?}");
         match i {
             BuilderInstruction::Create(d, iref) => {
-                oc_writer.send(OrganelleCreated(mp, iref, p));
+                oc_writer.send(OrganelleCreated(mp, iref, p, OrganelleType::Builder));
             }
             BuilderInstruction::ReplaceSelf(t) => match t {
                 crate::mods::cell::organelle::types::OrganelleType::None => {

@@ -27,6 +27,23 @@ impl BNA {
         Self { data }
     }
 
+
+    pub fn QuickBuild(t: OrganelleType) -> Self {
+        let mut data = [0; BNA_LENGTH];
+
+        data[0] = BuilderInstruction::Create(MapDirection::Up, 4).encode();
+        data[1] = BuilderInstruction::Create(MapDirection::Right, 3).encode();
+        data[2] = BuilderInstruction::Create(MapDirection::Down, 2).encode();
+        data[3] = BuilderInstruction::Create(MapDirection::Left, 1).encode();
+        data[4] = BuilderInstruction::ReplaceSelf(t).encode();
+
+        Self { data }
+    }
+
+    pub const SOLO: Self = {
+        Self { data:[0; BNA_LENGTH] }
+    };
+
     pub const WALKER: Self = {
         let mut data = [0; BNA_LENGTH];
         data[0] = 3;

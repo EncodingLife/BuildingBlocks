@@ -7,7 +7,6 @@ pub fn cell_death_due_to_no_organelle(
     query: Query<Entity, (With<Cell>, Without<Children>)>,
 ) {
     for e in query.iter() {
-        println!("Despawning organism {e:?} with no children");
         command.entity(e).despawn()
     }
 }

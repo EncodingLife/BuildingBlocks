@@ -13,7 +13,7 @@ impl CellBundle {
     pub fn new(bna: BNA) -> Self {
         CellBundle {
             cell: Cell { bna },
-            global_transform: GlobalTransform::IDENTITY,
+            global_transform: GlobalTransform::from_translation(Vec3::ZERO),
             visibility: InheritedVisibility::VISIBLE,
         }
     }

@@ -1,3 +1,3 @@
 
-pub(super) mod change_requests;
-pub(super) mod structure_changed;
+pub mod change_requests;
+pub mod structure_changed;

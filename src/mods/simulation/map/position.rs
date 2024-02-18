@@ -3,8 +3,8 @@ use bevy::prelude::*;
 use super::super::settings::*;
 use super::direction::*;
 
-const X_START: f32 = (MAP_CELL_WIDTH as f32 * MAP_CELL_SIZE) / -2.0;
-const Y_START: f32 = (MAP_CELL_HEIGHT as f32 * MAP_CELL_SIZE) / -2.0;
+const X_START: f32 = (MAP_CELL_WIDTH as f32 * MAP_CELL_SIZE) / -2.0 + MAP_CELL_SIZE;
+const Y_START: f32 = (MAP_CELL_HEIGHT as f32 * MAP_CELL_SIZE) / -2.0 + MAP_CELL_SIZE;
 
 #[derive(Component, Copy, Clone, Debug, Default, PartialEq, Reflect)]
 pub struct MapPosition {
@@ -44,5 +44,12 @@ impl MapPosition {
             Y_START + self.y as f32 * MAP_CELL_SIZE,
             0.,
         )
+    }
+
+    pub fn offset(&self, xo: i32, yo: i32) -> MapPosition {
+
+        let x = (self.x + MAP_CELL_WIDTH as u32).checked_add_signed(xo).unwrap() % MAP_CELL_WIDTH as u32;
+        let y = (self.y + MAP_CELL_HEIGHT as u32).checked_add_signed(yo).unwrap() % MAP_CELL_HEIGHT as u32;
+        MapPosition { x, y }
     }
 }

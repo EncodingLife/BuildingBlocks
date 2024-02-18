@@ -16,8 +16,8 @@ impl Plugin for SimulationInfoPlugin {
 
 #[derive(Resource, Default)]
 pub struct SimulationDiagnosticInfo {
-    cell_count: usize,
-    instruction_count: usize,
+    pub cell_count: usize,
+    pub instruction_count: usize,
 }
 
 #[derive(Component)]

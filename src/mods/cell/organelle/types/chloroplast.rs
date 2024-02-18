@@ -1,5 +1,4 @@
 use super::super::*;
-use bevy::prelude::*;
 
 #[derive(Component, Default)]
 pub struct Chloroplast;
@@ -7,7 +6,7 @@ pub struct Chloroplast;
 impl OrganelleStructure for Chloroplast {
     const COLOUR: Color = Color::LIME_GREEN;
 
-    const STARTING_UTILIZABLE_ENERGY: u16 = 5;
+    const STARTING_UTILIZABLE_ENERGY: u16 = 18;
 }
 
 impl OrganelleFunctions for Chloroplast {

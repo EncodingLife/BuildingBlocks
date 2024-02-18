@@ -22,10 +22,6 @@ pub fn queue_builder_structural_change_requests(
             Ok(o) => o.bna.get_instruction(b.instruction_index),
             Err(e) => panic!("{e}"),
         };
-        println!(
-            "Builder executing {instruction:?} at {}",
-            b.instruction_index
-        );
 
         b.increment();
         let target_pos = match instruction {

@@ -1,16 +1,25 @@
 use bevy::prelude::*;
 
-use crate::mods::cell::{
+use crate::mods::{cell::{
     cell_bundle::CellBundle,
-    organelle::{organelle_bundle::OrganelleBundle, types::nucleus::Nucleus},
+    organelle::
+        types::OrganelleType
+    ,
     CellSpawned,
-};
+}, simulation::{settings::MAP_CELL_HEIGHT, world_manager::organelle::change_requests::OrganelleCreated}};
 
-pub fn cell_spawned(mut command: Commands, mut ev_reader: EventReader<CellSpawned>) {
+pub fn cell_spawned(
+    mut command: Commands,
+    mut ev_reader: EventReader<CellSpawned>,
+    mut ev_create_o: EventWriter<OrganelleCreated>,
+) {
     for &CellSpawned(bna, mp) in ev_reader.read() {
-        println!("Spawning new entity at {mp:?}");
-        command.spawn(CellBundle::new(bna)).with_children(|p| {
-            p.spawn(OrganelleBundle::new(Nucleus, mp));
-        });
+        let e = command.spawn(CellBundle::new(bna)).id();
+
+        assert!(mp.y < MAP_CELL_HEIGHT.into());
+
+        // TODO: This feels wrong and should be done without exposing OrganelleCreated
+
+        ev_create_o.send(OrganelleCreated(mp, 0, e, OrganelleType::Nucleus));
     }
 }

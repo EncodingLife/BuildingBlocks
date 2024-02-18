@@ -6,7 +6,7 @@ use self::{
 };
 
 mod fps;
-mod simulation_info;
+pub mod simulation_info;
 
 pub struct InterfacePlugin;
 

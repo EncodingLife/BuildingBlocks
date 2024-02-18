@@ -35,7 +35,7 @@ where
                     custom_size: Some(Vec2::new(MAP_CELL_SIZE, MAP_CELL_SIZE)),
                     ..Default::default()
                 },
-                global_transform: GlobalTransform::from_translation(map_position.get_translation()),
+                global_transform: GlobalTransform::from_translation(map_position.get_translation() + Vec3::new(MAP_CELL_SIZE/2.0, -MAP_CELL_SIZE/2.0, 0.0)),
                 ..Default::default()
             },
         }

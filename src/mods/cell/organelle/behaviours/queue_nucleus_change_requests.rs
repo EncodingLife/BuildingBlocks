@@ -17,14 +17,12 @@ pub fn queue_nucleus_structural_change_requests(
     mut ev_writer: EventWriter<OrganelleStructuralChangeRequest>,
 ) {
     for (e, p, _, position) in query.iter_mut() {
-        println!("Executing initial instructions for {e:?}:");
         let bna = match parent_cell_query.get(p.get()) {
             Ok(o) => o.bna,
             Err(e) => panic!("{e}"),
         };
         for i in 0..4 {
             let i = bna.get_instruction(i);
-            println!("- {i:?}:");
             match i {
                 BuilderInstruction::Create(d, iref) => {
                     ev_writer.send(OrganelleStructuralChangeRequest {

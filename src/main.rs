@@ -2,8 +2,7 @@ use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*};
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use mods::{
     cell::CellPlugin, debug_setup::*, interface::InterfacePlugin, simulation::{
-        settings::{WINDOW_HEIGHT, WINDOW_WIDTH},
-        SimulationPlugin,
+        settings::{WINDOW_HEIGHT, WINDOW_WIDTH}, tick::Ticked, SimulationPlugin
     }
 };
 
@@ -25,6 +24,6 @@ fn main() {
         ))
         .add_plugins(FrameTimeDiagnosticsPlugin::default())
         .add_plugins(WorldInspectorPlugin::new())
-        .add_systems(Startup, debug_setup)
+        .add_systems(Update, population_control.run_if(on_event::<Ticked>()))
         .run();
 }
