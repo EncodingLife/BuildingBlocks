@@ -22,9 +22,10 @@ impl OrganelleChangeRequestApprovalHandler for HasSufficientUtilizableEnergy {
         change: &OrganelleStructuralChangeRequest,
         context: &OrganelleChangeRequestContext,
     ) -> bool {
+        let structure = Builder::get_structure();
         if match change.instruction {
             BuilderInstruction::Create(_, _) => {
-                change.source_energy.0 < (Builder::get_structure().spawn_energy_cost + 1)
+                change.source_energy.0 < (structure.spawn_energy_cost + structure.starting_energy + 1)
             }
             BuilderInstruction::ReplaceSelf(t) => {
                 change.source_energy.0 < t.get_structure().spawn_energy_cost + 1

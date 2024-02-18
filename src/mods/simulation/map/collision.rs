@@ -9,7 +9,6 @@ pub struct CollisionMap {
 }
 
 impl CollisionMap {
-    // #TODO: Fix the inconsistency in cell co-ordinate data types
     pub fn new() -> Self {
         Self {
             occupancy: [0; (MAP_CELL_HEIGHT as usize * MAP_CELL_WIDTH as usize)],
@@ -17,10 +16,10 @@ impl CollisionMap {
     }
 
     pub fn length() -> u32 {
-        (MAP_CELL_HEIGHT * MAP_CELL_WIDTH) as u32
+        MAP_CELL_HEIGHT * MAP_CELL_WIDTH
     }
 
-    fn to_1_d(x: u16, y: u16) -> usize {
+    fn to_1_d(x: u32, y: u32) -> usize {
         let k = ((MAP_CELL_WIDTH * y) + x) as usize;
         assert!(
             k < MAP_CELL_HEIGHT as usize * MAP_CELL_WIDTH as usize,
@@ -29,13 +28,13 @@ impl CollisionMap {
         k
     }
 
-    fn get_map_position_from_1_d(pos: u16) -> MapPosition {
+    fn get_map_position_from_1_d(pos: u32) -> MapPosition {
         let y = pos % MAP_CELL_WIDTH;
         let x = (pos - y) / MAP_CELL_WIDTH;
-        MapPosition::new(x as u32, y as u32)
+        MapPosition::new(x, y)
     }
 
-    pub fn get(&self, x: u16, y: u16) -> u8 {
+    pub fn get(&self, x: u32, y: u32) -> u8 {
         assert!(x < MAP_CELL_WIDTH && y < MAP_CELL_HEIGHT, "{x},{y}");
         self.occupancy[Self::to_1_d(x, y)]
     }
@@ -44,7 +43,7 @@ impl CollisionMap {
         self.occupancy[Self::to_1_d(mp.x.try_into().unwrap(), mp.y.try_into().unwrap())] == 0
     }
 
-    pub fn set(&mut self, x: u16, y: u16, val: u8) {
+    pub fn set(&mut self, x: u32, y: u32, val: u8) {
         assert!(x < MAP_CELL_WIDTH && y < MAP_CELL_HEIGHT, "{x},{y}");
         self.occupancy[Self::to_1_d(x, y)] = val;
     }

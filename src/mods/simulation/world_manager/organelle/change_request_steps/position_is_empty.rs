@@ -20,8 +20,8 @@ impl OrganelleChangeRequestApprovalHandler for PositionIsEmpty {
         context: &OrganelleChangeRequestContext,
     ) -> bool {
         match change.instruction {
-            BuilderInstruction::Create(d, _) => {
-                context.map.empty(change.target_pos.neighbour(d))
+            BuilderInstruction::Create(_, _) => {
+                context.map.empty(change.target_pos)
             }
             _ => match &self.next {
                 Some(n) => n.handle(change, context),

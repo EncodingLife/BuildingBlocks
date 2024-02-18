@@ -6,7 +6,7 @@ pub struct Nucleus;
 impl Nucleus {
     pub const STRUCTURE: OrganelleStructure = OrganelleStructure {
         color: Color::PURPLE,
-        starting_energy: 20,
+        starting_energy: 5,
         spawn_energy_cost: 2
     };
 }

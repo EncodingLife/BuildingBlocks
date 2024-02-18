@@ -6,7 +6,7 @@ use crate::mods::{cell::{
         types::OrganelleType
     ,
     CellSpawned,
-}, simulation::{settings::MAP_CELL_HEIGHT, world_manager::organelle::change_requests::OrganelleCreated}};
+}, simulation::{settings::MAP_CELL_HEIGHT, world_manager::organelle::create::*}};
 
 pub fn cell_spawned(
     mut command: Commands,
@@ -20,6 +20,6 @@ pub fn cell_spawned(
 
         // TODO: This feels wrong and should be done without exposing OrganelleCreated
 
-        ev_create_o.send(OrganelleCreated(mp, 0, e, OrganelleType::Nucleus));
+        ev_create_o.send(OrganelleCreated(mp, 0, e, OrganelleType::Nucleus, None));
     }
 }

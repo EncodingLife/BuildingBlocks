@@ -62,8 +62,13 @@ impl BNA {
     };
 
     pub fn rand() -> Self {
+        let mut data = [0; BNA_LENGTH];
+
+        for i in 0..BNA_LENGTH {
+            data[i] = rand::thread_rng().gen();
+        }
         Self {
-            data: [rand::thread_rng().gen(); BNA_LENGTH],
+            data,
         }
     }
 

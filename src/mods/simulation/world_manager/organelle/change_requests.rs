@@ -10,12 +10,10 @@ use crate::mods::{
 };
 use bevy::prelude::*;
 
-use super::change_request_steps::{
+use super::{change_request_steps::{
     get_pipeline, OrganelleChangeRequestApprovalHandler, OrganelleChangeRequestContext,
-};
+}, create::OrganelleCreated};
 
-#[derive(Event)]
-pub struct OrganelleCreated(pub MapPosition, pub u8, pub Entity, pub OrganelleType);
 
 #[derive(Event)]
 pub struct OrganelleTypeChange(pub Entity, pub OrganelleType, pub u8, pub MapPosition);
@@ -42,7 +40,7 @@ pub fn handle_organelle_structural_change_requests(
     let solved: Vec<OrganelleStructuralChangeRequest> =
         grouped.iter().map(|(_, ins)| *ins[0]).collect(); // TODO: Add actual solving logic
 
-    if valid_instructions.iter().count() != solved.iter().count() {
+    if false && valid_instructions.iter().count() != solved.iter().count() {
         println!(
             "conflict resolution trimmed instructions: {}->{}",
             valid_instructions.iter().count(),
@@ -52,21 +50,21 @@ pub fn handle_organelle_structural_change_requests(
 
     for &OrganelleStructuralChangeRequest {
         instruction: i,
-        source: e,
+        source: s,
         parent: p,
         target_pos: mp,
-        source_energy: _
+        source_energy: _,
     } in solved.iter()
     {
         match i {
             BuilderInstruction::Create(d, iref) => {
-                oc_writer.send(OrganelleCreated(mp, iref, p, OrganelleType::Builder));
+                oc_writer.send(OrganelleCreated(mp, iref, p, OrganelleType::Builder, Some(s)));
             }
             BuilderInstruction::ReplaceSelf(t) => match t {
                 crate::mods::cell::organelle::types::OrganelleType::None => {
-                    or_writer.send(OrganelleRemoved(e, p, mp));
+                    or_writer.send(OrganelleRemoved(s, p, mp));
                 }
-                _ => otc_writer.send(OrganelleTypeChange(e, t, 0, mp)), // 0 can later be replaced with iref
+                _ => otc_writer.send(OrganelleTypeChange(s, t, 0, mp)), // 0 can later be replaced with iref
             },
         }
     }

@@ -19,6 +19,6 @@ pub fn population_control(diagnostics: Res<SimulationDiagnosticInfo>, collision_
         };
         assert!(p.x < MAP_CELL_WIDTH.into());
         assert!(p.y < MAP_CELL_HEIGHT.into());
-        ev_writer.send(CellSpawned(BNA::QuickBuild(t), p));
+        ev_writer.send(CellSpawned(BNA::rand(), p));
     }
 }
