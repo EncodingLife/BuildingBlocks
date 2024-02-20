@@ -1,11 +1,13 @@
-use self::{builder::Builder, chloroplast::Chloroplast, mitochondria::Mitochondria, nucleus::Nucleus};
+use self::{chloroplast::Chloroplast, mitochondria::Mitochondria, nucleus::Nucleus};
 
 use super::{OrganelleFunctions, OrganelleStructure};
 
 pub mod builder;
 pub mod chloroplast;
-pub mod nucleus;
 pub mod mitochondria;
+pub mod nucleus;
+
+pub use self::builder::Builder;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum OrganelleType {
@@ -13,7 +15,7 @@ pub enum OrganelleType {
     Builder,
     Chloroplast,
     Nucleus,
-    Mitochondria
+    Mitochondria,
 }
 
 impl OrganelleType {

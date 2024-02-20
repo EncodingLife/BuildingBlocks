@@ -1,15 +1,19 @@
 use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*};
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use mods::{
-    cell::CellPlugin, debug_setup::*, interface::InterfacePlugin, simulation::{
-        settings::{WINDOW_HEIGHT, WINDOW_WIDTH}, tick::Ticked, SimulationPlugin
-    }
+    cell::CellPlugin,
+    debug_setup::*,
+    interface::InterfacePlugin,
+    simulation::{
+        schedule::SchedulePlugin, settings::{WINDOW_HEIGHT, WINDOW_WIDTH}, PreSim, SimulationPlugin
+    },
 };
 
 mod mods;
 
 fn main() {
     App::new()
+        .add_plugins(SchedulePlugin)
         .add_plugins((
             DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {
@@ -24,6 +28,6 @@ fn main() {
         ))
         .add_plugins(FrameTimeDiagnosticsPlugin::default())
         .add_plugins(WorldInspectorPlugin::new())
-        .add_systems(Update, population_control.run_if(on_event::<Ticked>()))
+        .add_systems(PreSim, population_control)
         .run();
 }

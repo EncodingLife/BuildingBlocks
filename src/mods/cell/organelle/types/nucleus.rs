@@ -3,6 +3,9 @@ use super::super::*;
 #[derive(Component, Default)]
 pub struct Nucleus;
 
+#[derive(Component, Default)]
+pub struct InitializedNucleus;
+
 impl Nucleus {
     pub const STRUCTURE: OrganelleStructure = OrganelleStructure {
         color: Color::PURPLE,

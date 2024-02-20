@@ -1,4 +1,7 @@
-use crate::mods::{cell::organelle::sustenance::Sustenance, simulation::tick::Ticked};
+use crate::mods::{
+    cell::organelle::sustenance::Sustenance,
+    simulation::{tick::Ticked, FixedBehaviour, TriggerBehaviour},
+};
 use bevy::prelude::*;
 
 use self::{
@@ -20,7 +23,7 @@ pub mod utilizable_energy;
 pub struct OrganelleStructure {
     pub color: Color,
     pub starting_energy: u16,
-    pub spawn_energy_cost: u16
+    pub spawn_energy_cost: u16,
 }
 
 pub trait OrganelleFunctions {
@@ -36,13 +39,15 @@ impl Plugin for OrganellePlugin {
             .register_type::<Sustenance>()
             .register_type::<UtilizableEnergy>()
             .add_systems(
-                Update,
+                FixedBehaviour,
                 (
                     consume_energy_for_maintenance,
                     queue_nucleus_structural_change_requests,
-                    queue_builder_structural_change_requests,
-                )
-                    .run_if(on_event::<Ticked>()),
+                ),
+            )
+            .add_systems(
+                TriggerBehaviour,
+                (queue_builder_structural_change_requests,),
             );
     }
 }

@@ -1,5 +1,8 @@
 use bevy::prelude::*;
 
+use crate::mods::simulation::ApproveBehaviour;
+use crate::mods::simulation::ExecuteBehaviour;
+
 use self::change_requests::*;
 use self::create::*;
 use self::structure_changed::*;
@@ -16,12 +19,12 @@ impl Plugin for OrganelleEventsPlugin {
         app.add_event::<OrganelleCreated>()
             .add_event::<OrganelleTypeChange>()
             .add_event::<OrganelleRemoved>()
-            .add_systems(Update, handle_organelle_structural_change_requests)
+            .add_systems(ApproveBehaviour, handle_organelle_structural_change_requests)
             .add_systems(
-                PostUpdate,
+                ExecuteBehaviour,
                 (
-                    create_organelle::create_organelle,
-                    use_energy::use_energy,
+                    create_organelle,
+                    use_energy,
                     organelle_type_changed,
                     organelle_removed,
                 ),

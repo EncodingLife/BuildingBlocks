@@ -6,7 +6,7 @@ use self::{
     organelle::OrganellePlugin,
 };
 
-use super::simulation::map::position::MapPosition;
+use super::simulation::{map::position::MapPosition, FixedBehaviour};
 
 mod behaviours;
 pub mod bna;
@@ -17,9 +17,13 @@ pub struct CellPlugin;
 
 impl Plugin for CellPlugin {
     fn build(&self, app: &mut App) {
+        println!("Cell plugin");
         app.add_event::<CellSpawned>()
             .add_plugins(OrganellePlugin)
-            .add_systems(Update, (cell_death_due_to_no_organelle, cell_spawned));
+            .add_systems(
+                FixedBehaviour,
+                (cell_spawned, cell_death_due_to_no_organelle),
+            );
     }
 }
 
